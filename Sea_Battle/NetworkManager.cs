@@ -9,8 +9,7 @@ namespace SeaBattleNet
 {
     public partial class Form1
     {
-        // Сеть и кнопки
-
+        // Онлайн и кнопки
         void SetupStreams(TcpClient c)
         {
             var ns = c.GetStream();
@@ -28,7 +27,6 @@ namespace SeaBattleNet
                     {
                         string line = await reader.ReadLineAsync();
                         if (line == null) break;
-
                         Invoke(new Action(() => ProcessMessage(line)));
                     }
                 }
@@ -38,66 +36,48 @@ namespace SeaBattleNet
 
         void Send(string msg)
         {
-            try
-            {
-                writer?.WriteLine(msg);
-            }
-            catch { }
+            writer?.WriteLine(msg);
         }
 
         private async void btnHost_Click(object sender, EventArgs e)
         {
-            try
-            {
-                int port = int.Parse(txtPort.Text);
-                listener = new TcpListener(IPAddress.Any, port);
-                listener.Start();
+            int port = int.Parse(txtPort.Text);
+            listener = new TcpListener(IPAddress.Any, port);
+            listener.Start();
 
-                lblStatus.Text = "Ожидание подключения клиента...";
-                client = await listener.AcceptTcpClientAsync();
-                SetupStreams(client);
+            lblStatus.Text = "Ожидание подключения клиента...";
+            client = await listener.AcceptTcpClientAsync();
+            SetupStreams(client);
 
-                isHost = true;
-                myTurn = true;
-                connected = true;
+            isHost = true;
+            myTurn = true;
+            connected = true;
 
-                btnHost.Enabled = false;
-                btnConnect.Enabled = false;
+            btnHost.Enabled = false;
+            btnConnect.Enabled = false;
 
-                lblStatus.Text = "Подключен как ХОСТ. Ваш ход. Кликайте по правому полю.";
-                PlaceShipsRandom();
-                StartReceiveLoop();
-            }
-            catch (Exception ex)
-            {
-                lblStatus.Text = "Ошибка: " + ex.Message;
-            }
+            lblStatus.Text = "Подключен как ХОСТ. Ваш ход. Кликайте по правому полю.";
+            PlaceShipsRandom();
+            StartReceiveLoop();
         }
 
         private async void btnConnect_Click(object sender, EventArgs e)
         {
-            try
-            {
-                int port = int.Parse(txtPort.Text);
-                client = new TcpClient();
-                await client.ConnectAsync(txtIp.Text, port);
-                SetupStreams(client);
+            int port = int.Parse(txtPort.Text);
+            client = new TcpClient();
+            await client.ConnectAsync(txtIp.Text, port);
+            SetupStreams(client);
 
-                isHost = false;
-                myTurn = false;
-                connected = true;
+            isHost = false;
+            myTurn = false;
+            connected = true;
 
-                btnHost.Enabled = false;
-                btnConnect.Enabled = false;
+            btnHost.Enabled = false;
+            btnConnect.Enabled = false;
 
-                lblStatus.Text = "Подключен как КЛИЕНТ. Сейчас ход соперника.";
-                PlaceShipsRandom();
-                StartReceiveLoop();
-            }
-            catch (Exception ex)
-            {
-                lblStatus.Text = "Ошибка: " + ex.Message;
-            }
+            lblStatus.Text = "Подключен как КЛИЕНТ. Сейчас ход соперника.";
+            PlaceShipsRandom();
+            StartReceiveLoop();
         }
 
         private void btnNewGame_Click(object sender, EventArgs e)
@@ -123,7 +103,7 @@ namespace SeaBattleNet
             }
             else
             {
-                lblStatus.Text = "Для сетевой нажмите «Создать игру» или «Подключиться».";
+                lblStatus.Text = "Нажмите «Создать игру» или «Подключиться».";
             }
         }
 

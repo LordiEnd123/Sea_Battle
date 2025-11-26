@@ -127,7 +127,7 @@ namespace SeaBattleNet
             groupConnection.Size = new Size(618, 104);
             groupConnection.TabIndex = 2;
             groupConnection.TabStop = false;
-            groupConnection.Text = "Соединение";
+
 
             ClientSize = new Size(642, 441);
             Controls.Add(groupConnection);

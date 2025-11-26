@@ -22,11 +22,10 @@ namespace SeaBattleNet
         StreamReader? reader;
         StreamWriter? writer;
 
-        bool isHost = false;   // я сервер или клиент
-        bool myTurn = false;   // сейчас мой ход?
-        bool gameOver = false; // игра закончилась?
-        bool connected = false; // есть сетевое соединение?
-
+        bool isHost = false;   // Я являюсь сервером игры или клиентом
+        bool myTurn = false;   // Мой ли ход сейчас
+        bool gameOver = false; // Игра закончилась
+        bool connected = false; // Есть ли соединение
         Random rnd = new Random();
 
         enum CellState
@@ -45,7 +44,6 @@ namespace SeaBattleNet
         }
 
         // Игровая логика
-
         private void EnemyCell_Click(object? sender, EventArgs e)
         {
             if (!connected)
@@ -131,8 +129,7 @@ namespace SeaBattleNet
             {
                 gameOver = true;
                 lblStatus.Text = "Вы победили! Игра окончена.";
-                MessageBox.Show("Вы победили!", "Морской бой",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Вы победили!", "Морской бой", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DisconnectFromLobby();
             }
             else
@@ -172,7 +169,6 @@ namespace SeaBattleNet
             }
 
             bool allDead = CheckAllShipsDead(myField);
-
             string res;
             if (!hit)
                 res = "miss";
@@ -188,10 +184,8 @@ namespace SeaBattleNet
             if (res == "win")
             {
                 gameOver = true;
-                lblStatus.Text = "Вы проиграли :( Игра окончена.";
-
-                MessageBox.Show("Вы проиграли :(", "Морской бой",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                lblStatus.Text = "Вы проиграли. Игра окончена.";
+                MessageBox.Show("Вы проиграли.", "Морской бой", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 DisconnectFromLobby();
             }
             else

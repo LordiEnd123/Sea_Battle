@@ -9,7 +9,7 @@ namespace SeaBattleNet
 {
     public partial class Form1
     {
-        // ====== СЕТЬ И КНОПКИ ======
+        // Сеть и кнопки
 
         void SetupStreams(TcpClient c)
         {
@@ -32,10 +32,7 @@ namespace SeaBattleNet
                         Invoke(new Action(() => ProcessMessage(line)));
                     }
                 }
-                catch
-                {
-                    // разрыв соединения — просто выходим из цикла
-                }
+                catch { }
             });
         }
 
@@ -45,10 +42,7 @@ namespace SeaBattleNet
             {
                 writer?.WriteLine(msg);
             }
-            catch
-            {
-                // игнорируем ошибки отправки
-            }
+            catch { }
         }
 
         private async void btnHost_Click(object sender, EventArgs e)
@@ -64,7 +58,7 @@ namespace SeaBattleNet
                 SetupStreams(client);
 
                 isHost = true;
-                myTurn = true; // хост ходит первым
+                myTurn = true;
                 connected = true;
 
                 btnHost.Enabled = false;
@@ -90,7 +84,7 @@ namespace SeaBattleNet
                 SetupStreams(client);
 
                 isHost = false;
-                myTurn = false; // первый ход у хоста
+                myTurn = false;
                 connected = true;
 
                 btnHost.Enabled = false;
@@ -108,7 +102,7 @@ namespace SeaBattleNet
 
         private void btnNewGame_Click(object sender, EventArgs e)
         {
-            // послать команду напарнику и локально перезапустить
+            // Послать команду напарнику и локально перезапустить
             if (connected && writer != null)
                 Send("NEW");
 
@@ -123,10 +117,9 @@ namespace SeaBattleNet
 
             if (connected)
             {
-                myTurn = isHost; // в новой игре первый ход снова у хоста
+                myTurn = isHost;
                 lblStatus.Text = myTurn
-                    ? "Новая игра. Ваш ход. Стреляйте по правому полю."
-                    : "Новая игра. Ход соперника.";
+                    ? "Новая игра. Ваш ход. Стреляйте по правому полю." : "Новая игра. Ход соперника.";
             }
             else
             {

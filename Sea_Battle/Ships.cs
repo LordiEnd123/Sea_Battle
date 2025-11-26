@@ -1,6 +1,4 @@
-﻿using System.Windows.Forms;
-
-namespace SeaBattleNet
+﻿namespace SeaBattleNet
 {
     public partial class Form1
     {
@@ -15,9 +13,7 @@ namespace SeaBattleNet
         }
 
         // Определяем, уничтожен ли корабль на моём поле и возвращаем его границы
-        bool IsMyShipKilledAndBounds(int x, int y,
-                                     out int sx, out int sy,
-                                     out int ex, out int ey)
+        bool IsMyShipKilledAndBounds(int x, int y, out int sx, out int sy, out int ex, out int ey)
         {
             sx = ex = x;
             sy = ey = y;
@@ -25,7 +21,7 @@ namespace SeaBattleNet
             bool IsShipOrHit(CellState c) =>
                 c == CellState.Ship || c == CellState.Hit;
 
-            // определяем ориентацию
+            // Определяем ориентацию корабля
             bool horizontal = false;
             if (x > 0 && IsShipOrHit(myField[x - 1, y]))
                 horizontal = true;
@@ -43,10 +39,9 @@ namespace SeaBattleNet
                 while (cx + 1 < BoardSize && IsShipOrHit(myField[cx + 1, y]))
                     cx++;
                 ex = cx;
-
                 sy = ey = y;
 
-                // если где-то осталась целая палуба — корабль не добит
+                // Если где-то осталась целая палуба, то корабль не добит
                 for (int i = sx; i <= ex; i++)
                     if (myField[i, y] == CellState.Ship)
                         return false;
@@ -73,11 +68,7 @@ namespace SeaBattleNet
             return true;
         }
 
-        // На поле противника у нас только попадания (Hit),
-        // поэтому просто берём непрерывную линию X'ов.
-        void GetHitShipBounds(CellState[,] field, int x, int y,
-                              out int sx, out int sy,
-                              out int ex, out int ey)
+        void GetHitShipBounds(CellState[,] field, int x, int y, out int sx, out int sy, out int ex, out int ey)
         {
             sx = ex = x;
             sy = ey = y;
@@ -99,7 +90,6 @@ namespace SeaBattleNet
                 while (cx + 1 < BoardSize && field[cx + 1, y] == CellState.Hit)
                     cx++;
                 ex = cx;
-
                 sy = ey = y;
             }
             else
@@ -113,12 +103,11 @@ namespace SeaBattleNet
                 while (cy + 1 < BoardSize && field[x, cy + 1] == CellState.Hit)
                     cy++;
                 ey = cy;
-
                 sx = ex = x;
             }
         }
 
-        // Ставим точки вокруг прямоугольника корабля (sx,sy)-(ex,ey)
+        // Ставим точки вокруг прямоугольника корабля
         void MarkAroundShip(CellState[,] field, Button[,] buttons,
                             int sx, int sy, int ex, int ey)
         {
@@ -129,7 +118,7 @@ namespace SeaBattleNet
                     if (xx < 0 || yy < 0 || xx >= BoardSize || yy >= BoardSize)
                         continue;
 
-                    // пропускаем клетки самого корабля
+                    // Пропускаем клетки самого корабля
                     if (xx >= sx && xx <= ex && yy >= sy && yy <= ey)
                         continue;
 

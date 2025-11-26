@@ -17,7 +17,6 @@ namespace SeaBattleNet
         private Label labelIp;
         private Label labelPort;
         private GroupBox groupConnection;
-        private Button btnDisconnect;
 
         protected override void Dispose(bool disposing)
         {
@@ -45,41 +44,31 @@ namespace SeaBattleNet
             groupConnection = new GroupBox();
             groupConnection.SuspendLayout();
             SuspendLayout();
-            // 
-            // pnlMy
-            // 
+
             pnlMy.BorderStyle = BorderStyle.FixedSingle;
-            pnlMy.Location = new Point(12, 12);
+            pnlMy.Location = new Point(3, 12);
             pnlMy.Name = "pnlMy";
-            pnlMy.Size = new Size(300, 300);
+            pnlMy.Size = new Size(310, 310);
             pnlMy.TabIndex = 0;
-            // 
-            // pnlEnemy
-            // 
+
             pnlEnemy.BorderStyle = BorderStyle.FixedSingle;
-            pnlEnemy.Location = new Point(330, 12);
+            pnlEnemy.Location = new Point(320, 12);
             pnlEnemy.Name = "pnlEnemy";
-            pnlEnemy.Size = new Size(300, 300);
+            pnlEnemy.Size = new Size(310, 310);
             pnlEnemy.TabIndex = 1;
-            // 
-            // txtIp
-            // 
+
             txtIp.Location = new Point(45, 24);
             txtIp.Name = "txtIp";
             txtIp.Size = new Size(160, 27);
             txtIp.TabIndex = 0;
             txtIp.Text = "127.0.0.1";
-            // 
-            // txtPort
-            // 
+
             txtPort.Location = new Point(290, 24);
             txtPort.Name = "txtPort";
             txtPort.Size = new Size(60, 27);
             txtPort.TabIndex = 1;
             txtPort.Text = "5000";
-            // 
-            // btnHost
-            // 
+            
             btnHost.Location = new Point(19, 58);
             btnHost.Name = "btnHost";
             btnHost.Size = new Size(120, 40);
@@ -87,9 +76,7 @@ namespace SeaBattleNet
             btnHost.Text = "Создать игру";
             btnHost.UseVisualStyleBackColor = true;
             btnHost.Click += btnHost_Click;
-            // 
-            // btnConnect
-            // 
+
             btnConnect.Location = new Point(145, 58);
             btnConnect.Name = "btnConnect";
             btnConnect.Size = new Size(120, 40);
@@ -97,9 +84,7 @@ namespace SeaBattleNet
             btnConnect.Text = "Подключиться";
             btnConnect.UseVisualStyleBackColor = true;
             btnConnect.Click += btnConnect_Click;
-            // 
-            // btnNewGame
-            // 
+
             btnNewGame.Location = new Point(370, 17);
             btnNewGame.Name = "btnNewGame";
             btnNewGame.Size = new Size(120, 41);
@@ -107,36 +92,28 @@ namespace SeaBattleNet
             btnNewGame.Text = "Новая игра";
             btnNewGame.UseVisualStyleBackColor = true;
             btnNewGame.Click += btnNewGame_Click;
-            // 
-            // lblStatus
-            // 
+
             lblStatus.AutoSize = true;
             lblStatus.Location = new Point(271, 68);
             lblStatus.Name = "lblStatus";
             lblStatus.Size = new Size(124, 20);
             lblStatus.TabIndex = 5;
             lblStatus.Text = "Статус: нет ИГРЫ";
-            // 
-            // labelIp
-            // 
+
             labelIp.AutoSize = true;
             labelIp.Location = new Point(16, 27);
             labelIp.Name = "labelIp";
             labelIp.Size = new Size(24, 20);
             labelIp.TabIndex = 4;
             labelIp.Text = "IP:";
-            // 
-            // labelPort
-            // 
+
             labelPort.AutoSize = true;
             labelPort.Location = new Point(221, 27);
             labelPort.Name = "labelPort";
             labelPort.Size = new Size(47, 20);
             labelPort.TabIndex = 5;
             labelPort.Text = "Порт:";
-            // 
-            // groupConnection
-            // 
+
             groupConnection.Controls.Add(btnNewGame);
             groupConnection.Controls.Add(lblStatus);
             groupConnection.Controls.Add(btnHost);
@@ -151,9 +128,7 @@ namespace SeaBattleNet
             groupConnection.TabIndex = 2;
             groupConnection.TabStop = false;
             groupConnection.Text = "Соединение";
-            // 
-            // Form1
-            // 
+
             ClientSize = new Size(642, 441);
             Controls.Add(groupConnection);
             Controls.Add(pnlEnemy);

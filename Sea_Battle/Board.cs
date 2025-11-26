@@ -6,7 +6,7 @@ namespace SeaBattleNet
 {
     public partial class Form1
     {
-        // ====== ПОЛЯ И КОРАБЛИ ======
+        // Поля и корабли
 
         void InitBoards()
         {
@@ -26,7 +26,7 @@ namespace SeaBattleNet
                     bMy.Left = x * CellSize;
                     bMy.Top = y * CellSize;
                     bMy.Tag = new Point(x, y);
-                    bMy.Enabled = false; // по своим клеткам не стреляем
+                    bMy.Enabled = false;
                     pnlMy.Controls.Add(bMy);
                     myButtons[x, y] = bMy;
 
@@ -68,7 +68,7 @@ namespace SeaBattleNet
         {
             ClearFields();
 
-            // 1×4, 2×3, 3×2, 4×1
+            // Корабли
             int[] ships = { 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
 
             foreach (int deck in ships)
@@ -79,9 +79,6 @@ namespace SeaBattleNet
                 while (!placed)
                 {
                     attempts++;
-                    if (attempts > 1000)
-                        throw new Exception("Не удалось расставить корабли. Попробуйте ещё раз.");
-
                     bool horizontal = rnd.Next(2) == 0;
                     int x = rnd.Next(BoardSize);
                     int y = rnd.Next(BoardSize);
@@ -89,7 +86,7 @@ namespace SeaBattleNet
                     if (!CanPlaceShip(x, y, deck, horizontal))
                         continue;
 
-                    // ставим корабль
+                    // Ставим корабль
                     if (horizontal)
                     {
                         for (int i = 0; i < deck; i++)
@@ -105,7 +102,7 @@ namespace SeaBattleNet
                 }
             }
 
-            // показать свои корабли
+            // Показать свои корабли
             for (int yy = 0; yy < BoardSize; yy++)
             {
                 for (int xx = 0; xx < BoardSize; xx++)
@@ -119,7 +116,6 @@ namespace SeaBattleNet
         }
 
         // Проверка, можно ли поставить корабль такой длины в точке (x,y)
-        // horizontal = true -> по горизонтали, false -> по вертикали
         bool CanPlaceShip(int x, int y, int deck, bool horizontal)
         {
             if (horizontal)
@@ -130,7 +126,7 @@ namespace SeaBattleNet
                     int cx = x + i;
                     int cy = y;
 
-                    // проверяем саму клетку и все вокруг неё (3×3)
+                    // Проверяем клетку и все клетки вокруг неё
                     for (int yy = cy - 1; yy <= cy + 1; yy++)
                     {
                         for (int xx = cx - 1; xx <= cx + 1; xx++)
@@ -158,14 +154,12 @@ namespace SeaBattleNet
                         {
                             if (xx < 0 || yy < 0 || xx >= BoardSize || yy >= BoardSize)
                                 continue;
-
                             if (myField[xx, yy] == CellState.Ship)
                                 return false;
                         }
                     }
                 }
             }
-
             return true;
         }
     }

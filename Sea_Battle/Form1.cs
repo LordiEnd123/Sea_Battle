@@ -7,7 +7,6 @@ namespace SeaBattleNet
 {
     public partial class Form1 : Form
     {
-        // чтобы не конфликтовать с Form.Size
         const int BoardSize = 10;
         const int CellSize = 30;
 
@@ -17,7 +16,7 @@ namespace SeaBattleNet
         CellState[,] myField = new CellState[BoardSize, BoardSize];
         CellState[,] enemyField = new CellState[BoardSize, BoardSize];
 
-        // поля сети делаем допускающими null
+        // Поля сети делаем допускающими null
         TcpListener? listener;
         TcpClient? client;
         StreamReader? reader;
@@ -43,24 +42,15 @@ namespace SeaBattleNet
             InitializeComponent();
             InitBoards();
             lblStatus.Text = "Нажмите «Создать игру» или «Подключиться». ";
-
         }
 
-        // ====== ИГРОВАЯ ЛОГИКА / ПРОТОКОЛ ======
+        // Игровая логика
 
         private void EnemyCell_Click(object? sender, EventArgs e)
         {
-            // защита от странных ситуаций
             if (!connected)
             {
                 MessageBox.Show("Сначала создайте игру или подключитесь.", "Морской бой",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (gameOver)
-            {
-                MessageBox.Show("Игра уже закончена. Нажмите «Новая игра».", "Морской бой",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -71,13 +61,10 @@ namespace SeaBattleNet
                 return;
             }
 
-            if (writer == null)
+            if (writer == null || sender is not Button b || b.Tag is not Point p)
                 return;
 
-            if (sender is not Button b || b.Tag is not Point p)
-                return;
-
-            // уже стреляли сюда
+            // Уже стреляли сюда
             if (enemyField[p.X, p.Y] == CellState.Miss ||
                 enemyField[p.X, p.Y] == CellState.Hit)
                 return;
@@ -89,8 +76,7 @@ namespace SeaBattleNet
 
         void ProcessMessage(string msg)
         {
-            string[] parts = msg.Split(' ');
-
+            string[] parts = msg.Split(' ', StringSplitOptions.RemoveEmptyEntries);
             if (parts.Length == 0) return;
 
             switch (parts[0])
@@ -133,8 +119,7 @@ namespace SeaBattleNet
                 enemyButtons[x, y].BackColor = Color.Red;
                 enemyButtons[x, y].Text = "X";
 
-                // если корабль противника уничтожен (или это был последний — win),
-                // ставим точки вокруг него
+                // Если корабль противника уничтожен, то ставим точки вокруг него
                 if (res == "kill" || res == "win")
                 {
                     GetHitShipBounds(enemyField, x, y, out int sx, out int sy, out int ex, out int ey);
@@ -145,27 +130,16 @@ namespace SeaBattleNet
             if (res == "win")
             {
                 gameOver = true;
-                lblStatus.Text = "Вы победили!";
-
-                var r = MessageBox.Show(
-                    "Победа! Переиграть?",
-                    "Морской бой",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information);
-
-                if (r == DialogResult.Yes)
-                    btnNewGame_Click(this, EventArgs.Empty);
-                else
-                    DisconnectFromLobby();
+                lblStatus.Text = "Вы победили! Игра окончена.";
+                MessageBox.Show("Вы победили!", "Морской бой",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DisconnectFromLobby();
             }
-
             else
             {
-                // если промахнулись — ход переходит сопернику,
-                // если попали или уничтожили корабль — ход остаётся у нас
+                // Если промахнулись, то ход переходит сопернику, если попали или уничтожили корабль, то ход остаётся у нас
                 myTurn = (res == "hit" || res == "kill");
-                lblStatus.Text = myTurn ? "Ваш ход. Стреляйте по правому полю."
-                                        : "Ход соперника. Ждите его выстрела.";
+                lblStatus.Text = myTurn ? "Ваш ход. Стреляйте по правому полю." : "Ход соперника. Ждите его выстрела.";
             }
         }
 
@@ -173,7 +147,6 @@ namespace SeaBattleNet
         void HandleIncomingShot(int x, int y)
         {
             if (gameOver) return;
-
             bool hit = myField[x, y] == CellState.Ship;
             bool shipKilled = false;
             int sx = x, sy = y, ex = x, ey = y;
@@ -184,11 +157,10 @@ namespace SeaBattleNet
                 myButtons[x, y].BackColor = Color.Red;
                 myButtons[x, y].Text = "X";
 
-                // проверяем, добит ли весь корабль, и получаем его границы
+                // Проверяем, добит ли весь корабль, получаем его границы
                 shipKilled = IsMyShipKilledAndBounds(x, y, out sx, out sy, out ex, out ey);
                 if (shipKilled)
                 {
-                    // ставим точки вокруг нашего уничтоженного корабля
                     MarkAroundShip(myField, myButtons, sx, sy, ex, ey);
                 }
             }
@@ -196,7 +168,6 @@ namespace SeaBattleNet
             {
                 if (myField[x, y] == CellState.Empty)
                     myField[x, y] = CellState.Miss;
-
                 myButtons[x, y].Text = "•";
             }
 
@@ -208,7 +179,7 @@ namespace SeaBattleNet
             else if (allDead)
                 res = "win";
             else if (shipKilled)
-                res = "kill";   // НОВЫЙ результат: корабль уничтожен
+                res = "kill";
             else
                 res = "hit";
 
@@ -217,27 +188,17 @@ namespace SeaBattleNet
             if (res == "win")
             {
                 gameOver = true;
-                lblStatus.Text = "Вы проиграли :(";
+                lblStatus.Text = "Вы проиграли :( Игра окончена.";
 
-                var r = MessageBox.Show(
-                    "Вы проиграли. Переиграть?",
-                    "Морской бой",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information);
-
-                if (r == DialogResult.Yes)
-                    btnNewGame_Click(this, EventArgs.Empty);
-                else
-                    DisconnectFromLobby();
+                MessageBox.Show("Вы проиграли :(", "Морской бой",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                DisconnectFromLobby();
             }
-
             else
             {
-                // если по нам попали — соперник ходит ещё раз,
-                // если промахнулся — теперь наш ход
+                // Если по нам попали, то соперник ходит ещё раз, если промахнулся, то теперь наш ход
                 myTurn = !hit;
-                lblStatus.Text = myTurn ? "Ваш ход. Стреляйте по правому полю."
-                                        : "Ход соперника. Ждите его выстрела.";
+                lblStatus.Text = myTurn ? "Ваш ход. Стреляйте по правому полю." : "Ход соперника. Ждите его выстрела.";
             }
         }
 
@@ -254,17 +215,9 @@ namespace SeaBattleNet
                 client?.Close();
                 listener?.Stop();
             }
-            catch
-            {
-            }
-
-            // если у тебя есть кнопка "Отключиться" – выключаем её
-            // (если такой кнопки нет, просто удали эту строку)
-            // btnDisconnect.Enabled = false;
-
+            catch { }
             btnHost.Enabled = true;
             btnConnect.Enabled = true;
-
             lblStatus.Text = "Отключено. Нажмите «Создать игру» или «Подключиться».";
         }
     }

@@ -2,6 +2,7 @@
 {
     public partial class Form1
     {
+        // Проверяем остались ли живые корабли.
         bool CheckAllShipsDead(CellState[,] field)
         {
             for (int y = 0; y < BoardSize; y++)
@@ -12,14 +13,13 @@
             return true;
         }
 
-        // Определяем, уничтожен ли корабль на моём поле и возвращаем его границы
+        // Определяем уничтожен ли корабль на моём поле и возвращаем его границы
         bool IsMyShipKilledAndBounds(int x, int y, out int sx, out int sy, out int ex, out int ey)
         {
             sx = ex = x;
             sy = ey = y;
 
-            bool IsShipOrHit(CellState c) =>
-                c == CellState.Ship || c == CellState.Hit;
+            bool IsShipOrHit(CellState c) => c == CellState.Ship || c == CellState.Hit;
 
             // Определяем ориентацию корабля
             bool horizontal = false;
@@ -68,6 +68,7 @@
             return true;
         }
 
+        // Находит границы убитого корабля
         void GetHitShipBounds(CellState[,] field, int x, int y, out int sx, out int sy, out int ex, out int ey)
         {
             sx = ex = x;
@@ -107,7 +108,7 @@
             }
         }
 
-        // Ставим точки вокруг прямоугольника корабля
+        // Ставим точки вокруг убитого корабля
         void MarkAroundShip(CellState[,] field, Button[,] buttons,
                             int sx, int sy, int ex, int ey)
         {

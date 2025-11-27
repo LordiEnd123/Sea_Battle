@@ -16,15 +16,15 @@ namespace SeaBattleNet
         CellState[,] myField = new CellState[BoardSize, BoardSize];
         CellState[,] enemyField = new CellState[BoardSize, BoardSize];
 
-        // Поля сети делаем допускающими null
-        TcpListener? listener;
-        TcpClient? client;
-        StreamReader? reader;
-        StreamWriter? writer;
+        // Поля сети 
+        TcpListener? listener; // Создание игры 
+        TcpClient? client;     // Подключение к другому игроку
+        StreamReader? reader;  // Чтение сообщений от второго игрока
+        StreamWriter? writer;  // Отправка сообщений второму игроку
 
-        bool isHost = false;   // Я являюсь сервером игры или клиентом
-        bool myTurn = false;   // Мой ли ход сейчас
-        bool gameOver = false; // Игра закончилась
+        bool isHost = false;    // Я являюсь сервером игры или клиентом
+        bool myTurn = false;    // Мой ли ход сейчас
+        bool gameOver = false;  // Игра закончилась
         bool connected = false; // Есть ли соединение
         Random rnd = new Random();
 
@@ -44,6 +44,8 @@ namespace SeaBattleNet
         }
 
         // Игровая логика
+
+        // Реакция на клик игрока по полю врага
         private void EnemyCell_Click(object? sender, EventArgs e)
         {
             if (!connected)
@@ -72,6 +74,7 @@ namespace SeaBattleNet
             lblStatus.Text = "Выстрел отправлен. Ждём ответа...";
         }
 
+        // Обработчик входящих сетевых сообщений
         void ProcessMessage(string msg)
         {
             string[] parts = msg.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -104,6 +107,7 @@ namespace SeaBattleNet
             }
         }
 
+        // Обработка ответа от врага на наш выстрел
         void HandleShotResult(string res, int x, int y)
         {
             if (res == "miss")
@@ -140,7 +144,7 @@ namespace SeaBattleNet
             }
         }
 
-
+        // Обрабатываем выстрел врага по нам
         void HandleIncomingShot(int x, int y)
         {
             if (gameOver) return;

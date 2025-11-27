@@ -8,6 +8,7 @@ namespace SeaBattleNet
     {
         // Поля и корабли
 
+        // Создание сетки 10 на 10 из кнопок для обеих сторон
         void InitBoards()
         {
             pnlMy.Controls.Clear();
@@ -45,6 +46,7 @@ namespace SeaBattleNet
             ClearFields();
         }
 
+        // Сбрасывает поля
         void ClearFields()
         {
             for (int y = 0; y < BoardSize; y++)
@@ -64,13 +66,11 @@ namespace SeaBattleNet
             gameOver = false;
         }
 
+        // Ставит корабли в случайном порядке
         void PlaceShipsRandom()
         {
             ClearFields();
-
-            // Корабли
             int[] ships = { 4, 3, 3, 2, 2, 2, 1, 1, 1, 1 };
-
             foreach (int deck in ships)
             {
                 bool placed = false;

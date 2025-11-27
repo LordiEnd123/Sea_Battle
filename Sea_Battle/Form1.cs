@@ -290,7 +290,7 @@ namespace SeaBattleNet
             ClearFields();
             currentShipIndex = 0;
             manualHorizontal = true;
-            lblStatus.Text = "Ручная расстановка. Ставим корабль на 4 клетки (горизонтально).";
+            lblStatus.Text = "Ручная расстановка.";
         }
 
         private void chkHorizontal_CheckedChanged(object? sender, EventArgs e)

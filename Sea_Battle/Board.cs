@@ -46,7 +46,7 @@ namespace SeaBattleNet
             ClearFields();
         }
 
-        // Сбрасывает поля
+        // Очищаем игровую доску перед началом новой игры
         void ClearFields()
         {
             for (int y = 0; y < BoardSize; y++)
@@ -66,7 +66,7 @@ namespace SeaBattleNet
             gameOver = false;
         }
 
-        // Ставит корабли в случайном порядке
+        // Ставим корабли в случайном порядке
         void PlaceShipsRandom()
         {
             ClearFields();

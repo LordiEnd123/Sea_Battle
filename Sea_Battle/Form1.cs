@@ -50,8 +50,7 @@ namespace SeaBattleNet
         {
             if (!connected)
             {
-                MessageBox.Show("Сначала создайте игру или подключитесь.", "Морской бой",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Сначала создайте игру или подключитесь.", "Морской бой", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -65,8 +64,7 @@ namespace SeaBattleNet
                 return;
 
             // Уже стреляли сюда
-            if (enemyField[p.X, p.Y] == CellState.Miss ||
-                enemyField[p.X, p.Y] == CellState.Hit)
+            if (enemyField[p.X, p.Y] == CellState.Miss || enemyField[p.X, p.Y] == CellState.Hit)
                 return;
 
             Send($"SHOT {p.X} {p.Y}");
@@ -74,7 +72,7 @@ namespace SeaBattleNet
             lblStatus.Text = "Выстрел отправлен. Ждём ответа...";
         }
 
-        // Обработчик входящих сетевых сообщений
+        // Обработчик входящих сообщений
         void ProcessMessage(string msg)
         {
             string[] parts = msg.Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -83,18 +81,14 @@ namespace SeaBattleNet
             switch (parts[0])
             {
                 case "SHOT":
-                    if (parts.Length >= 3 &&
-                        int.TryParse(parts[1], out int sx) &&
-                        int.TryParse(parts[2], out int sy))
+                    if (parts.Length >= 3 && int.TryParse(parts[1], out int sx) && int.TryParse(parts[2], out int sy))
                     {
                         HandleIncomingShot(sx, sy);
                     }
                     break;
 
                 case "RESULT":
-                    if (parts.Length >= 4 &&
-                        int.TryParse(parts[2], out int rx) &&
-                        int.TryParse(parts[3], out int ry))
+                    if (parts.Length >= 4 && int.TryParse(parts[2], out int rx) && int.TryParse(parts[3], out int ry))
                     {
                         string res = parts[1];
                         HandleShotResult(res, rx, ry);
@@ -216,7 +210,7 @@ namespace SeaBattleNet
             catch { }
             btnHost.Enabled = true;
             btnConnect.Enabled = true;
-            lblStatus.Text = "Отключено. Нажмите «Создать игру» или «Подключиться».";
+            lblStatus.Text = "Нажмите «Создать игру» или «Подключиться».";
         }
     }
 }

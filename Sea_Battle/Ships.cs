@@ -68,7 +68,7 @@
             return true;
         }
 
-        // Находит границы убитого корабля
+        // Находим границы убитого корабля
         void GetHitShipBounds(CellState[,] field, int x, int y, out int sx, out int sy, out int ex, out int ey)
         {
             sx = ex = x;
@@ -109,8 +109,7 @@
         }
 
         // Ставим точки вокруг убитого корабля
-        void MarkAroundShip(CellState[,] field, Button[,] buttons,
-                            int sx, int sy, int ex, int ey)
+        void MarkAroundShip(CellState[,] field, Button[,] buttons, int sx, int sy, int ex, int ey)
         {
             for (int yy = sy - 1; yy <= ey + 1; yy++)
             {

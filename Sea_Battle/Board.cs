@@ -102,7 +102,7 @@ namespace SeaBattleNet
                 }
             }
 
-            // Показать свои корабли
+            // Показать свои корабли после расстановки
             for (int yy = 0; yy < BoardSize; yy++)
             {
                 for (int xx = 0; xx < BoardSize; xx++)

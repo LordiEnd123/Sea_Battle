@@ -12,11 +12,14 @@ namespace SeaBattleNet
         private TextBox txtPort;
         private Button btnHost;
         private Button btnConnect;
-        private Button btnNewGame;
         private Label lblStatus;
         private Label labelIp;
         private Label labelPort;
         private GroupBox groupConnection;
+        private Button btnAutoPlace;
+        private Button btnManualPlace;
+        private CheckBox chkHorizontal;
+
 
         protected override void Dispose(bool disposing)
         {
@@ -37,11 +40,12 @@ namespace SeaBattleNet
             txtPort = new TextBox();
             btnHost = new Button();
             btnConnect = new Button();
-            btnNewGame = new Button();
             lblStatus = new Label();
             labelIp = new Label();
             labelPort = new Label();
             groupConnection = new GroupBox();
+            chkHorizontal = new CheckBox();
+
             groupConnection.SuspendLayout();
             SuspendLayout();
 
@@ -61,7 +65,7 @@ namespace SeaBattleNet
             txtIp.Name = "txtIp";
             txtIp.Size = new Size(160, 27);
             txtIp.TabIndex = 0;
-            txtIp.Text = "127.0.0.1";
+            txtIp.Text = "10.233.54.81";
 
             txtPort.Location = new Point(290, 24);
             txtPort.Name = "txtPort";
@@ -85,13 +89,34 @@ namespace SeaBattleNet
             btnConnect.UseVisualStyleBackColor = true;
             btnConnect.Click += btnConnect_Click;
 
-            btnNewGame.Location = new Point(370, 17);
-            btnNewGame.Name = "btnNewGame";
-            btnNewGame.Size = new Size(120, 41);
-            btnNewGame.TabIndex = 4;
-            btnNewGame.Text = "Новая игра";
-            btnNewGame.UseVisualStyleBackColor = true;
-            btnNewGame.Click += btnNewGame_Click;
+            btnAutoPlace = new Button();
+            btnAutoPlace.Location = new Point(372, 24);
+            btnAutoPlace.Name = "btnAutoPlace";
+            btnAutoPlace.Size = new Size(120, 27);
+            btnAutoPlace.TabIndex = 4;
+            btnAutoPlace.Text = "Авто";
+            btnAutoPlace.UseVisualStyleBackColor = true;
+            btnAutoPlace.Click += btnAutoPlace_Click;
+  
+            btnManualPlace = new Button();
+            btnManualPlace.Location = new Point(498, 24);
+            btnManualPlace.Name = "btnManualPlace";
+            btnManualPlace.Size = new Size(120, 27);
+            btnManualPlace.TabIndex = 5;
+            btnManualPlace.Text = "Ручная";
+            btnManualPlace.UseVisualStyleBackColor = true;
+            btnManualPlace.Click += btnManualPlace_Click;
+
+            chkHorizontal.AutoSize = true;
+            chkHorizontal.Location = new Point(19, 104);
+            chkHorizontal.Name = "chkHorizontal";
+            chkHorizontal.Size = new Size(110, 20);
+            chkHorizontal.TabIndex = 5;
+            chkHorizontal.Text = "Горизонтально";
+            chkHorizontal.Checked = true;
+            chkHorizontal.CheckedChanged += chkHorizontal_CheckedChanged;
+            groupConnection.Controls.Add(chkHorizontal);
+
 
             lblStatus.AutoSize = true;
             lblStatus.Location = new Point(271, 68);
@@ -114,7 +139,6 @@ namespace SeaBattleNet
             labelPort.TabIndex = 5;
             labelPort.Text = "Порт:";
 
-            groupConnection.Controls.Add(btnNewGame);
             groupConnection.Controls.Add(lblStatus);
             groupConnection.Controls.Add(btnHost);
             groupConnection.Controls.Add(btnConnect);
@@ -127,6 +151,9 @@ namespace SeaBattleNet
             groupConnection.Size = new Size(618, 104);
             groupConnection.TabIndex = 2;
             groupConnection.TabStop = false;
+            groupConnection.Controls.Add(btnAutoPlace);
+            groupConnection.Controls.Add(btnManualPlace);
+
 
 
             ClientSize = new Size(642, 441);

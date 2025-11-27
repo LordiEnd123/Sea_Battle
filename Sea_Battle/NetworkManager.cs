@@ -26,7 +26,8 @@ namespace SeaBattleNet
                 {
                     while (!gameOver && connected)
                     {
-                        string line = await reader.ReadLineAsync();
+                        if (reader == null) break;
+                        string? line = await reader.ReadLineAsync();
                         if (line == null) break;
                         Invoke(new Action(() => ProcessMessage(line)));
                     }
@@ -35,11 +36,14 @@ namespace SeaBattleNet
             });
         }
 
+
         // Отправляет строку врагу
         void Send(string msg)
         {
-            writer?.WriteLine(msg);
+            if (writer == null) return;
+            writer.WriteLine(msg);
         }
+
 
         // Создаёт сервер
         private async void btnHost_Click(object sender, EventArgs e)
@@ -62,10 +66,12 @@ namespace SeaBattleNet
                 btnConnect.Enabled = false;
 
                 lblStatus.Text = "Подключен как ХОСТ. Ваш ход. Кликайте по правому полю.";
-                PlaceShipsRandom();
+                if (!HasAnyShips())
+                    PlaceShipsRandom();
                 StartReceiveLoop();
+
             }
-            catch (Exception ex)
+            catch
             {
                 lblStatus.Text = "Ошибка";
             }
@@ -89,10 +95,11 @@ namespace SeaBattleNet
                 btnConnect.Enabled = false;
 
                 lblStatus.Text = "Подключен как КЛИЕНТ. Сейчас ход соперника.";
-                PlaceShipsRandom();
+                if (!HasAnyShips())
+                    PlaceShipsRandom();
                 StartReceiveLoop();
             }
-            catch (Exception ex)
+            catch
             {
                 lblStatus.Text = "Ошибка";
             }
@@ -102,7 +109,6 @@ namespace SeaBattleNet
         {
             if (connected && writer != null)
                 Send("NEW");
-
             StartNewGameLocal();
         }
 

@@ -121,7 +121,6 @@
                     // Пропускаем клетки самого корабля
                     if (xx >= sx && xx <= ex && yy >= sy && yy <= ey)
                         continue;
-
                     if (field[xx, yy] == CellState.Empty)
                     {
                         field[xx, yy] = CellState.Miss;

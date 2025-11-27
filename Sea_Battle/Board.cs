@@ -27,7 +27,7 @@ namespace SeaBattleNet
                     bMy.Left = x * CellSize;
                     bMy.Top = y * CellSize;
                     bMy.Tag = new Point(x, y);
-                    bMy.Enabled = false;
+                    bMy.MouseDown += MyBoardCell_MouseDown;
                     pnlMy.Controls.Add(bMy);
                     myButtons[x, y] = bMy;
 
@@ -40,9 +40,9 @@ namespace SeaBattleNet
                     bEn.Click += EnemyCell_Click;
                     pnlEnemy.Controls.Add(bEn);
                     enemyButtons[x, y] = bEn;
+
                 }
             }
-
             ClearFields();
         }
 
@@ -55,14 +55,12 @@ namespace SeaBattleNet
                 {
                     myField[x, y] = CellState.Empty;
                     enemyField[x, y] = CellState.Empty;
-
                     myButtons[x, y].BackColor = SystemColors.Control;
                     myButtons[x, y].Text = "";
                     enemyButtons[x, y].BackColor = SystemColors.Control;
                     enemyButtons[x, y].Text = "";
                 }
             }
-
             gameOver = false;
         }
 
@@ -133,7 +131,6 @@ namespace SeaBattleNet
                         {
                             if (xx < 0 || yy < 0 || xx >= BoardSize || yy >= BoardSize)
                                 continue;
-
                             if (myField[xx, yy] == CellState.Ship)
                                 return false;
                         }
@@ -147,7 +144,6 @@ namespace SeaBattleNet
                 {
                     int cx = x;
                     int cy = y + i;
-
                     for (int yy = cy - 1; yy <= cy + 1; yy++)
                     {
                         for (int xx = cx - 1; xx <= cx + 1; xx++)
